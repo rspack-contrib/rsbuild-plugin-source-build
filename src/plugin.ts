@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { RsbuildPlugin } from '@rsbuild/core';
+import json5 from 'json5';
 import {
   type ExtraMonorepoStrategies,
   filterByField,
@@ -103,8 +104,6 @@ export function pluginSourceBuild(
         tsconfigPath: string,
         rspackReferences?: string[] | 'auto',
       ): Promise<string[]> => {
-        const { default: json5 } = await import('json5');
-
         const references = new Set<string>();
 
         for (const project of projects || []) {

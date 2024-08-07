@@ -1,5 +1,7 @@
 import type { Project } from '../project.js';
 import type { IMonorepoBaseData } from './getBaseData.js';
+import { getProjects as getPnpmMonorepoSubProjects } from './pnpm.js';
+import { getProjects as getRushMonorepoSubProjects } from './rush.js';
 
 export type GetProjectsFunc = (
   rootPath: string,
@@ -10,16 +12,10 @@ export const getMonorepoSubProjects = async (
 ): Promise<Project[]> => {
   const { type, rootPath, getProjects } = monorepoBaseData;
   if (type === 'pnpm') {
-    const { getProjects: getPnpmMonorepoSubProjects } = await import(
-      './pnpm.js'
-    );
     return getPnpmMonorepoSubProjects(rootPath);
   }
 
   if (type === 'rush') {
-    const { getProjects: getRushMonorepoSubProjects } = await import(
-      './rush.js'
-    );
     return getRushMonorepoSubProjects(rootPath);
   }
 

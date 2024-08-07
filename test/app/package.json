@@ -1,0 +1,12 @@
+{
+  "name": "@e2e/source-build-app",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rsbuild build"
+  },
+  "dependencies": {
+    "@e2e/source-build-components": "workspace:*",
+    "@rsbuild/plugin-source-build": "workspace:*"
+  }
+}

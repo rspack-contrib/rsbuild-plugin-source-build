@@ -14,7 +14,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -33,19 +35,25 @@
   },
   "dependencies": {
     "fast-glob": "^3.3.2",
-    "json5": "^2.2.3"
+    "json5": "^2.2.3",
+    "yaml": "^2.5.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@playwright/test": "^1.45.3",
     "@rsbuild/core": "^1.0.1-beta.8",
+    "@rsbuild/plugin-react": "1.0.1-beta.10",
+    "@rsbuild/plugin-type-check": "1.0.1-beta.10",
     "@types/node": "^20.14.13",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "nano-staged": "^0.8.0",
     "playwright": "^1.45.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "simple-git-hooks": "^2.11.1",
     "tsup": "^8.2.3",
-    "typescript": "^5.5.4",
-    "yaml": "^2.5.0"
+    "typescript": "^5.5.4"
   },
   "peerDependencies": {
     "@rsbuild/core": "0.x || 1.x"
