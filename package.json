@@ -1,7 +1,7 @@
 {
   "name": "@rsbuild/plugin-source-build",
-  "version": "0.0.0",
-  "repository": "https://github.com/rspack-contrib/rsbuild-plugin-template",
+  "version": "1.0.1",
+  "repository": "https://github.com/rspack-contrib/rsbuild-plugin-source-build",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -14,9 +14,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -56,7 +54,7 @@
     "typescript": "^5.5.4"
   },
   "peerDependencies": {
-    "@rsbuild/core": "0.x || 1.x"
+    "@rsbuild/core": "0.x || 1.x || ^1.0.1-beta.0"
   },
   "peerDependenciesMeta": {
     "@rsbuild/core": {
