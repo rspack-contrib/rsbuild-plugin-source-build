@@ -1,5 +1,5 @@
 {
-  "name": "rsbuild-plugin-example",
+  "name": "@rsbuild/plugin-source-build",
   "version": "0.0.0",
   "repository": "https://github.com/rspack-contrib/rsbuild-plugin-template",
   "license": "MIT",
