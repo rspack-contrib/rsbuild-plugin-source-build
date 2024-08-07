@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
+      json5:
+        specifier: ^2.2.3
+        version: 2.2.3
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.8.3
@@ -31,10 +38,13 @@ importers:
         version: 2.11.1
       tsup:
         specifier: ^8.2.3
-        version: 8.2.3(postcss@8.4.38)(typescript@5.5.4)
+        version: 8.2.3(postcss@8.4.38)(typescript@5.5.4)(yaml@2.5.0)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
+      yaml:
+        specifier: ^2.5.0
+        version: 2.5.0
 
 packages:
 
@@ -641,6 +651,11 @@ packages:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
 
+  json5@2.2.3:
+    resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
+    engines: {node: '>=6'}
+    hasBin: true
+
   lilconfig@3.1.1:
     resolution: {integrity: sha512-O18pf7nyvHTckunPWCV1XUNXU1piu01y2b7ATJ0ppkUkk8ocqVWBrYjJBCwHDjD/ZWcfyrA0P4gKhzWGi5EINQ==}
     engines: {node: '>=14'}
@@ -924,6 +939,11 @@ packages:
   wrap-ansi@8.1.0:
     resolution: {integrity: sha512-si7QWI6zUMq56bESFvagtmzMdGOtoxfR+Sez11Mobfc7tm+VkUckk9bW2UeffTGVUbOksxmSw0AA2gs8g71NCQ==}
     engines: {node: '>=12'}
+
+  yaml@2.5.0:
+    resolution: {integrity: sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==}
+    engines: {node: '>= 14'}
+    hasBin: true
 
 snapshots:
 
@@ -1416,6 +1436,8 @@ snapshots:
 
   joycon@3.1.1: {}
 
+  json5@2.2.3: {}
+
   lilconfig@3.1.1: {}
 
   lines-and-columns@1.2.4: {}
@@ -1495,11 +1517,12 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.2
 
-  postcss-load-config@6.0.1(postcss@8.4.38):
+  postcss-load-config@6.0.1(postcss@8.4.38)(yaml@2.5.0):
     dependencies:
       lilconfig: 3.1.1
     optionalDependencies:
       postcss: 8.4.38
+      yaml: 2.5.0
 
   postcss@8.4.38:
     dependencies:
@@ -1621,7 +1644,7 @@ snapshots:
 
   tslib@2.6.2: {}
 
-  tsup@8.2.3(postcss@8.4.38)(typescript@5.5.4):
+  tsup@8.2.3(postcss@8.4.38)(typescript@5.5.4)(yaml@2.5.0):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.23.0)
       cac: 6.7.14
@@ -1633,7 +1656,7 @@ snapshots:
       globby: 11.1.0
       joycon: 3.1.1
       picocolors: 1.0.1
-      postcss-load-config: 6.0.1(postcss@8.4.38)
+      postcss-load-config: 6.0.1(postcss@8.4.38)(yaml@2.5.0)
       resolve-from: 5.0.0
       rollup: 4.19.1
       source-map: 0.8.0-beta.0
@@ -1675,3 +1698,5 @@ snapshots:
       ansi-styles: 6.2.1
       string-width: 5.1.2
       strip-ansi: 7.1.0
+
+  yaml@2.5.0: {}

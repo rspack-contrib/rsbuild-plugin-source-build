@@ -1,16 +1,8 @@
-import type { RsbuildPlugin } from '@rsbuild/core';
-
-export type PluginExampleOptions = {
-  foo?: string;
-  bar?: boolean;
-};
-
-export const pluginExample = (
-  options: PluginExampleOptions = {},
-): RsbuildPlugin => ({
-  name: 'plugin-example',
-
-  setup() {
-    console.log('Hello Rsbuild!', options);
-  },
-});
+export {
+  PLUGIN_SOURCE_BUILD_NAME,
+  pluginSourceBuild,
+  type PluginSourceBuildOptions,
+} from './plugin.js';
+export { Project } from './project.js';
+export { getMonorepoBaseData, getMonorepoSubProjects } from './common/index.js';
+export type { MonorepoAnalyzer } from './types/index.js';
