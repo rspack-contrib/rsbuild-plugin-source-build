@@ -1,6 +1,7 @@
 {
   "name": "@rsbuild/plugin-source-build",
   "version": "1.0.1",
+  "description": "An Rsbuild plugin to provide support for monorepo source code referencing.",
   "repository": "https://github.com/rspack-contrib/rsbuild-plugin-source-build",
   "license": "MIT",
   "type": "module",
