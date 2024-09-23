@@ -225,7 +225,7 @@ When using `@rsbuild/plugin-source-build`, there are a few things to keep in min
 1. Ensure that the current project can compile the syntax or features used in the sub-project. For example, if the sub-project uses Stylus to write CSS, the current app needs to support Stylus compilation.
 2. Ensure that the current project has the same code syntax and features as the sub-project, such as consistent syntax versions for decorators.
 3. Source code building may have some limitations. When encountering issues, you can remove the `source` field from the sub-project's package.json and debug using the built artifacts of the sub-project.
-4. When `composite: true` is enabled, TypeScript will generate `*.tsbuildinfo` temporary files. You need to add these temporary files to the `.gitignore` file.
+4. When `composite: true` is enabled, TypeScript will generate `*.tsbuildinfo` temporary files. You need to add these temporary files to the `.gitignore` file. And be careful not to execute the build of sub-project independently (in this case the `tsbuildinfo` files will be inaccurate).
 
 ```text title=".gitignore"
 *.tsbuildinfo
