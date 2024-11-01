@@ -44,7 +44,7 @@
     "@rsbuild/core": "^1.0.19",
     "@rsbuild/plugin-react": "1.0.6",
     "@rsbuild/plugin-type-check": "1.0.1",
-    "@types/node": "^20.17.5",
+    "@types/node": "^22.8.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "nano-staged": "^0.8.0",
