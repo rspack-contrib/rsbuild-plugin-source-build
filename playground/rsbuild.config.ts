@@ -1,6 +1,6 @@
 import { defineConfig } from '@rsbuild/core';
-import { pluginExample } from '../src';
+import { pluginSourceBuild } from '../src';
 
 export default defineConfig({
-  plugins: [pluginExample()],
+  plugins: [pluginSourceBuild()],
 });
