@@ -26,8 +26,8 @@ jobs:
         with:
           node-version: 22
 
-      # Use corepack to install pnpm
       # Update npm to the latest version to enable OIDC
+      # Use corepack to install pnpm
       - name: Setup Package Managers
         run: |
           npm install -g npm@latest
@@ -41,7 +41,6 @@ jobs:
       - name: Publish
         uses: JS-DevTools/npm-publish@v3
         with:
-          provenance: true
           token: empty
 
       - name: Create GitHub Release
