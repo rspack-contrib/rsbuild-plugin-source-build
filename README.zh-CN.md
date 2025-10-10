@@ -120,6 +120,18 @@ monorepo
 }
 ```
 
+### 自定义 source 字段
+
+虽然插件默认使用 `source` 字段来指定源代码文件，但我们更推荐通过 [sourceField](#sourceField) 选项配置一个自定义字段（例如 `@custom/source`，其中 `custom` 可以替换为任意 scope 名称）。
+
+```ts
+pluginSourceBuild({
+  sourceField: "@custom/source",
+});
+```
+
+这是因为某些三方库（例如 Mobx）的 `package.json` 中也包含 `source` 字段，如果不进行区分，Rsbuild 可能会错误地解析这些库的源文件路径，从而导致意料之外的构建结果或类型问题。使用自定义字段可以避免此类冲突，确保 Rsbuild 在解析依赖关系时保持可控的行为。
+
 ## 配置 Project Reference
 
 在 TypeScript 项目中，你需要使用 TypeScript 提供的 [Project Reference](https://typescriptlang.org/docs/handbook/project-references) 能力，它可以帮助你更好地使用源码开发。
@@ -152,7 +164,7 @@ Project reference 提供了以下能力：
 {
   "compilerOptions": {
     "composite": true
-  },
+  }
 }
 ```
 
@@ -171,24 +183,24 @@ Project reference 提供了以下能力：
 
 用于配置源代码文件对应的解析字段。
 
-比如配置为 `my-source`：
+比如配置为 `@custom/source`：
 
 ```ts
 pluginSourceBuild({
-  sourceField: "my-source",
+  sourceField: "@custom/source",
 });
 ```
 
-在 `package.json` 中，即可通过 `my-source` 指定源代码文件的路径：
+在 `package.json` 中，即可通过 `@custom/source` 指定源代码文件的路径：
 
 ```json title="package.json"
 {
   "name": "lib",
   "main": "./dist/index.js",
-  "my-source": "./src/index.ts",
+  "@custom/source": "./src/index.ts",
   "exports": {
     ".": {
-      "my-source": "./src/index.ts",
+      "@custom/source": "./src/index.ts",
       "default": "./dist/index.js"
     }
   }

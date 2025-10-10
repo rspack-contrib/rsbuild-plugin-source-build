@@ -122,6 +122,18 @@ If the sub-project uses [exports](https://nodejs.org/api/packages.html#package-e
 }
 ```
 
+### Customizing Source Field
+
+Although the plugin uses the `source` field by default to specify the source file, we recommend configuring a custom field through the [sourceField](#sourceField) option (for example, `@custom/source`, where `custom` can be replaced with any scope name).
+
+```ts
+pluginSourceBuild({
+  sourceField: "@custom/source",
+});
+```
+
+This is because some packages (such as Mobx) also define a `source` field in their `package.json`. If not distinguished, Rsbuild may mistakenly resolve the source files of those dependencies, leading to unexpected build results or type issues. By using a custom field, you can avoid such conflicts and ensure that Rsbuild behaves predictably when resolving dependencies.
+
 ## Configure Project Reference
 
 In a TypeScript project, you need to use the capability provided by TypeScript called [Project Reference](https://typescriptlang.org/docs/handbook/project-references). It helps you develop source code more effectively.
@@ -154,7 +166,7 @@ At the same time, we need to set `composite` to `true` in the lib project's `tsc
 {
   "compilerOptions": {
     "composite": true
-  },
+  }
 }
 ```
 
@@ -173,24 +185,24 @@ Note that the above example is a simplified one. In real monorepo projects, ther
 
 Used to configure the resolve field of the source code files.
 
-For example, when configured as `my-source`:
+For example, when configured as `@custom/source`:
 
 ```ts
 pluginSourceBuild({
-  sourceField: "my-source",
+  sourceField: "@custom/source",
 });
 ```
 
-In `package.json`, the source code file path can be specified using `my-source`:
+In `package.json`, the source code file path can be specified using `@custom/source`:
 
 ```json title="package.json"
 {
   "name": "lib",
   "main": "./dist/index.js",
-  "my-source": "./src/index.ts",
+  "@custom/source": "./src/index.ts",
   "exports": {
     ".": {
-      "my-source": "./src/index.ts",
+      "@custom/source": "./src/index.ts",
       "default": "./dist/index.js"
     }
   }
