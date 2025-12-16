@@ -85,7 +85,7 @@ export function pluginSourceBuild(
           if (chain.module.rules.get(ruleId)) {
             const rule = chain.module.rule(ruleId);
 
-            // https://rspack.dev/config/resolve
+            // https://rspack.rs/config/resolve
             // when source is not exist, other mainFields will effect. // source > Rspack default mainFields.
             rule.resolve.mainFields.merge(
               resolvePriority === 'source'
