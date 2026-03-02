@@ -81,7 +81,8 @@ export function pluginSourceBuild(
       });
 
       api.modifyBundlerChain((chain, { CHAIN_ID }) => {
-        for (const ruleId of [CHAIN_ID.RULE.TS, CHAIN_ID.RULE.JS]) {
+        // TODO: remove `ts` when Rsbuild v1 is no longer supported.
+        for (const ruleId of ['ts', CHAIN_ID.RULE.JS]) {
           if (chain.module.rules.get(ruleId)) {
             const rule = chain.module.rule(ruleId);
 
@@ -171,11 +172,12 @@ export function pluginSourceBuild(
           };
         });
       } else {
+        // TODO: remove webpack branch when Rsbuild v1 is no longer supported.
         api.modifyBundlerChain(async (chain, { CHAIN_ID, environment }) => {
-          const { TS_CONFIG_PATHS } = CHAIN_ID.RESOLVE_PLUGIN;
           const { tsconfigPath } = environment;
 
-          if (!chain.resolve.plugins.has(TS_CONFIG_PATHS) || !tsconfigPath) {
+          // @ts-expect-error Only Rsbuild v1 has `resolve.plugins` type
+          if (!chain.resolve.plugins.has('ts-config-paths') || !tsconfigPath) {
             return;
           }
 
@@ -183,8 +185,9 @@ export function pluginSourceBuild(
 
           // set references config
           // https://github.com/dividab/tsconfig-paths-webpack-plugin#options
-          chain.resolve.plugin(TS_CONFIG_PATHS).tap((options) =>
-            options.map((option) => ({
+          // @ts-expect-error Only Rsbuild v1 has `resolve.plugins` type
+          chain.resolve.plugin('ts-config-paths').tap((options) =>
+            options.map((option: Record<string, unknown>) => ({
               ...option,
               references,
             })),

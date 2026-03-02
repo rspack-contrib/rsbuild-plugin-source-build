@@ -1,6 +1,7 @@
 {
   "name": "@e2e/source-build-app",
   "private": true,
+  "type": "module",
   "version": "1.0.0",
   "scripts": {
     "build": "rsbuild build"
