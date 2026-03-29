@@ -14,8 +14,6 @@
     "useDefineForClassFields": true,
     "declaration": false,
     "jsx": "react-jsx",
-    "ignoreDeprecations": "6.0",
-    "baseUrl": "./",
     // make type checker faster by not including types
     "types": [],
     "paths": {
