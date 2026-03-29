@@ -17,7 +17,6 @@
     "declarationDir": "./dist/types",
     "declarationMap": true,
     "jsx": "react-jsx",
-    "baseUrl": "./",
     // make type checker faster by not including types
     "types": [],
     "paths": {
