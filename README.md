@@ -104,7 +104,9 @@ For example, in the following example, when the lib package is referenced, the `
 }
 ```
 
-If the sub-project uses [exports](https://nodejs.org/api/packages.html#package-entry-points) field, you also need to add the `source` field in the `exports` field.
+If the sub-project uses the [exports](https://nodejs.org/api/packages.html#package-entry-points) field, you also need to add the `source` field to `exports`.
+
+Note that the declaration order of keys in `exports` affects resolution, so it is recommended to place the `source` field first in each export condition object to ensure the resolver prioritizes the module pointed to by `source`.
 
 ```json title="package.json"
 {
@@ -208,6 +210,8 @@ In `package.json`, the source code file path can be specified using `@custom/sou
   }
 }
 ```
+
+If you use a custom `sourceField` in `exports`, apply the same ordering rule and place that field first in each export condition object, since the key order in `exports` affects resolution priority.
 
 ### resolvePriority
 

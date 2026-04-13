@@ -104,6 +104,8 @@ monorepo
 
 如果子项目使用了 [exports](https://nodejs.org/api/packages.html#package-entry-points) 配置，那么你同样需要在 `exports` 中增加 `source` 字段。
 
+需要注意的是，`exports` 中 key 的声明顺序会影响解析结果，因此建议将 `source` 字段放在每个导出条件对象的第一个位置，以确保解析器优先解析 `source` 对应的模块。
+
 ```json title="package.json"
 {
   "name": "lib",
