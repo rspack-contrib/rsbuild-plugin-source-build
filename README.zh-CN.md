@@ -209,7 +209,7 @@ pluginSourceBuild({
 }
 ```
 
-如果你在 `exports` 中使用了自定义的 `sourceField`，也需要将该字段放在每个导出条件对象的最前面。因为 `exports` 中键的顺序会影响解析优先级。
+如果你在 `exports` 中使用了通过 `sourceField` 配置的自定义字段名（例如 `@custom/source`），请将该字段放在每个导出条件对象的最前面。因为 `exports` 中键的顺序会影响解析优先级。
 
 ### resolvePriority
 
