@@ -211,7 +211,7 @@ In `package.json`, the source code file path can be specified using `@custom/sou
 }
 ```
 
-If you use a custom `sourceField` in `exports`, apply the same ordering rule and place that field first in each export condition object, since the key order in `exports` affects resolution priority.
+If you use a custom `sourceField` in `exports`, place that field first in each export condition object, since the key order in `exports` affects resolution priority.
 
 ### resolvePriority
 
