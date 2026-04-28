@@ -25,7 +25,7 @@ Add plugin to your `rsbuild.config.ts`:
 
 ```ts
 // rsbuild.config.ts
-import { pluginSourceBuild } from "@rsbuild/plugin-source-build";
+import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 
 export default {
   plugins: [pluginSourceBuild()],
@@ -130,7 +130,7 @@ Although the plugin uses the `source` field by default to specify the source fil
 
 ```ts
 pluginSourceBuild({
-  sourceField: "@custom/source",
+  sourceField: '@custom/source',
 });
 ```
 
@@ -191,7 +191,7 @@ For example, when configured as `@custom/source`:
 
 ```ts
 pluginSourceBuild({
-  sourceField: "@custom/source",
+  sourceField: '@custom/source',
 });
 ```
 
@@ -234,7 +234,7 @@ When `resolvePriority` is set to `'output'`, `@rsbuild/plugin-source-build` will
 
 ```ts
 pluginSourceBuild({
-  resolvePriority: "output",
+  resolvePriority: 'output',
 });
 ```
 

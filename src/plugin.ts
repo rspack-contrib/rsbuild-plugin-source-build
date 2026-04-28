@@ -173,7 +173,7 @@ export function pluginSourceBuild(
         });
       } else {
         // TODO: remove webpack branch when Rsbuild v1 is no longer supported.
-        api.modifyBundlerChain(async (chain, { CHAIN_ID, environment }) => {
+        api.modifyBundlerChain(async (chain, { environment }) => {
           const { tsconfigPath } = environment;
 
           // @ts-expect-error Only Rsbuild v1 has `resolve.plugins` type

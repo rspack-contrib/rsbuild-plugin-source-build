@@ -23,7 +23,7 @@ npm add @rsbuild/plugin-source-build -D
 
 ```ts
 // rsbuild.config.ts
-import { pluginSourceBuild } from "@rsbuild/plugin-source-build";
+import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 
 export default {
   plugins: [pluginSourceBuild()],
@@ -128,7 +128,7 @@ monorepo
 
 ```ts
 pluginSourceBuild({
-  sourceField: "@custom/source",
+  sourceField: '@custom/source',
 });
 ```
 
@@ -189,7 +189,7 @@ Project reference 提供了以下能力：
 
 ```ts
 pluginSourceBuild({
-  sourceField: "@custom/source",
+  sourceField: '@custom/source',
 });
 ```
 
@@ -232,7 +232,7 @@ pluginSourceBuild({
 
 ```ts
 pluginSourceBuild({
-  resolvePriority: "output",
+  resolvePriority: 'output',
 });
 ```
 
