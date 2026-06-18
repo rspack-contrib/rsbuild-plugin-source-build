@@ -3,6 +3,10 @@
   "version": "1.0.6",
   "description": "An Rsbuild plugin to provide support for monorepo source code referencing.",
   "repository": "https://github.com/rstackjs/rsbuild-plugin-source-build",
+  "homepage": "https://github.com/rstackjs/rsbuild-plugin-source-build#readme",
+  "bugs": {
+    "url": "https://github.com/rstackjs/rsbuild-plugin-source-build/issues"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
