@@ -1,6 +1,6 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { expect, test } from '@playwright/test';
+import { expect, test } from '@rstest/playwright';
 import { createRsbuild, loadConfig } from '@rsbuild/core';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
