@@ -10,7 +10,8 @@ export default defineConfig({
     pluginTypeCheck({
       tsCheckerOptions: {
         typescript: {
-          // Referenced fixture declarations are built by the test script.
+          // test/index.test.ts builds the referenced fixture declarations before
+          // Rsbuild starts, so this checker only needs to validate the app project.
           build: false,
         },
       },
