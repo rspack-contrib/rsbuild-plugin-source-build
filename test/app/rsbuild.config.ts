@@ -4,5 +4,16 @@ import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 
 export default defineConfig({
-  plugins: [pluginSourceBuild(), pluginReact(), pluginTypeCheck()],
+  plugins: [
+    pluginSourceBuild(),
+    pluginReact(),
+    pluginTypeCheck({
+      tsCheckerOptions: {
+        typescript: {
+          // Referenced fixture declarations are built by the test script.
+          build: false,
+        },
+      },
+    }),
+  ],
 });
