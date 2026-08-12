@@ -42,7 +42,7 @@
     "@rsbuild/plugin-react": "^2.1.0",
     "@rsbuild/plugin-type-check": "^1.5.0",
     "@rslib/core": "^0.23.2",
-    "@rslint/core": "^0.6.5",
+    "@rslint/core": "^0.8.0",
     "@rstest/core": "^0.11.1",
     "@rstest/playwright": "^0.11.1",
     "@types/node": "^24.13.3",
