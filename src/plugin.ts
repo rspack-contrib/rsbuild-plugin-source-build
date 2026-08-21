@@ -8,38 +8,64 @@ import {
   getDependentProjects,
 } from './project-utils/index.js';
 import type { Project } from './project.js';
+import {
+  createSourceBuildPackages,
+  type ResolvePriority,
+} from './source-build/resolve.js';
+import { SourceBuildResolverPlugin } from './source-build/rspack-plugin.js';
 import type { TsConfig } from './types/index.js';
 
 export const PLUGIN_SOURCE_BUILD_NAME = 'rsbuild:source-build';
 
-export const getSourceInclude = async (options: {
-  projects: Project[];
-  sourceField: string;
-}): Promise<string[]> => {
-  const { projects, sourceField } = options;
+const PACKAGE_RESOLVE_PRIORITIES = new Set(['source', 'output']);
 
-  const includes = [];
-  for (const project of projects) {
-    includes.push(
-      ...project.getSourceEntryPaths({ field: sourceField, exports: true }),
+function validateResolvePriority(resolvePriority: unknown): void {
+  let entries: [string, unknown][];
+  if (typeof resolvePriority === 'string') {
+    entries = [['resolvePriority', resolvePriority]];
+  } else if (
+    resolvePriority &&
+    typeof resolvePriority === 'object' &&
+    !Array.isArray(resolvePriority)
+  ) {
+    entries = Object.entries(resolvePriority);
+  } else {
+    throw new Error(
+      `[${PLUGIN_SOURCE_BUILD_NAME}] resolvePriority must be "source", "output", or a package-name map.`,
     );
   }
 
-  return includes;
-};
+  for (const [packageName, priority] of entries) {
+    if (!PACKAGE_RESOLVE_PRIORITIES.has(priority as string)) {
+      throw new Error(
+        `[${PLUGIN_SOURCE_BUILD_NAME}] Invalid resolvePriority for "${packageName}": expected "source" or "output", received ${JSON.stringify(priority)}.`,
+      );
+    }
+  }
+}
 
 export interface PluginSourceBuildOptions {
   /**
    * Used to configure the resolve field of the source code files.
-   * @default 'source''
+   * @default 'source'
    */
   sourceField?: string;
   /**
-   * Whether to read source code or output code first.
+   * Whether to read source code or output code first. Use a package-name map
+   * to override the priority for individual selected workspace packages.
    * @default 'source'
    */
-  resolvePriority?: 'source' | 'output';
+  resolvePriority?: ResolvePriority;
+  /**
+   * The package name of the project that consumes workspace dependencies.
+   * Defaults to the package found at the Rsbuild project root.
+   */
   projectName?: string;
+  /**
+   * Additional adapters for discovering projects in custom monorepo formats.
+   * The plugin uses the adapter result as the workspace project boundary, then
+   * recursively selects dependencies of the current project from that result.
+   */
   extraMonorepoStrategies?: ExtraMonorepoStrategies;
 }
 
@@ -52,6 +78,7 @@ export function pluginSourceBuild(
     resolvePriority = 'source',
     extraMonorepoStrategies,
   } = options ?? {};
+  validateResolvePriority(resolvePriority);
 
   return {
     name: PLUGIN_SOURCE_BUILD_NAME,
@@ -59,28 +86,34 @@ export function pluginSourceBuild(
     setup(api) {
       const projectRootPath = api.context.rootPath;
 
-      let projects: Project[] | undefined;
-
-      api.modifyEnvironmentConfig(async (config) => {
-        projects =
-          projects ||
-          (await getDependentProjects(projectName || projectRootPath, {
+      let projectsPromise: Promise<Project[]> | undefined;
+      const getProjects = () => {
+        projectsPromise ||= getDependentProjects(
+          projectName || projectRootPath,
+          {
             cwd: projectRootPath,
             recursive: true,
             filter: filterByField(sourceField, true),
             extraMonorepoStrategies,
-          }));
-
-        const includes = await getSourceInclude({
-          projects,
-          sourceField,
-        });
-
-        config.source = config.source ?? {};
-        config.source.include = [...(config.source.include ?? []), ...includes];
-      });
+          },
+        );
+        return projectsPromise;
+      };
 
       api.modifyBundlerChain((chain, { CHAIN_ID }) => {
+        // Rspack uses SourceBuildResolverPlugin below so the source condition is
+        // applied only to dependent workspace projects discovered by the
+        // monorepo analyzer. Keep the legacy rule configuration for other
+        // bundlers.
+        if (api.context.bundlerType === 'rspack') {
+          return;
+        }
+        if (typeof resolvePriority !== 'string') {
+          throw new Error(
+            `[${PLUGIN_SOURCE_BUILD_NAME}] Per-package resolvePriority is only supported with Rspack.`,
+          );
+        }
+
         // TODO: remove `ts` when Rsbuild v1 is no longer supported.
         for (const ruleId of ['ts', CHAIN_ID.RULE.JS]) {
           if (chain.module.rules.get(ruleId)) {
@@ -107,7 +140,7 @@ export function pluginSourceBuild(
       ): Promise<string[]> => {
         const references = new Set<string>();
 
-        for (const project of projects || []) {
+        for (const project of await getProjects()) {
           const filePath = path.join(project.dir, 'tsconfig.json');
           if (fs.existsSync(filePath)) {
             references.add(filePath);
@@ -149,6 +182,16 @@ export function pluginSourceBuild(
 
       if (api.context.bundlerType === 'rspack') {
         api.modifyRspackConfig(async (config, { environment }) => {
+          const projects = await getProjects();
+          const packages = createSourceBuildPackages(projects, {
+            resolvePriority,
+          });
+
+          config.plugins ||= [];
+          config.plugins.push(
+            new SourceBuildResolverPlugin(packages, sourceField),
+          );
+
           const { tsconfigPath } = environment;
           if (!tsconfigPath) {
             return;

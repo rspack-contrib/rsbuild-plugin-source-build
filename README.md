@@ -134,7 +134,32 @@ pluginSourceBuild({
 });
 ```
 
-This is because some packages (such as Mobx) also define a `source` field in their `package.json`. If not distinguished, Rsbuild may mistakenly resolve the source files of those dependencies, leading to unexpected build results or type issues. By using a custom field, you can avoid such conflicts and ensure that Rsbuild behaves predictably when resolving dependencies.
+This makes the source-build contract explicit and avoids conflicts with packages
+that use `source` for another purpose. When using Rspack, the plugin additionally
+limits source resolution to dependent workspace projects discovered by the
+active monorepo analyzer, so unrelated `node_modules` packages are not affected.
+
+## Scoped Source Resolution
+
+With Rspack, the plugin derives the source-build boundary from the monorepo
+project graph. Starting from the current project, it recursively follows package
+dependencies and keeps only workspace projects that declare `sourceField`.
+Requests for those package names can resolve to source; all other package
+requests continue through Rspack's native resolver.
+
+Selected requests are still resolved by Rspack itself. The plugin adds
+`sourceField` to a scoped resolver rather than changing the global resolver, so
+target and dependency conditions, aliases, `resolvePriority`, and native
+output/source fallback behavior are preserved.
+
+As with normal Rspack resolution, a selected package must still be reachable
+through a workspace link, alias, or tsconfig path. The monorepo adapter defines
+the allowed scope; it does not register packages with the resolver.
+
+Custom monorepo integrations can provide that project graph through
+`extraMonorepoStrategies`. TypeScript project references are then augmented
+with the selected projects, but existing `tsconfig.json` references do not add
+packages to the source-build boundary.
 
 ## Configure Project Reference
 
@@ -215,10 +240,15 @@ If you use a custom field name configured via `sourceField` in `exports` (for ex
 
 ### resolvePriority
 
-- **Type:** `'source' | 'output'`
+- **Type:** `'source' | 'output' | Record<string, 'source' | 'output'>`
 - **Default:** `'source'`
 
-Used to control the priority of reading the source code or the output code.
+Used to control the priority of reading the source code or the output code. A
+string applies to every selected workspace package. An object overrides the
+priority by package name; selected packages omitted from the object use
+`'source'`. The object does not select packages—the active monorepo strategy and
+the package dependency graph still determine the source-build boundary.
+Per-package priority maps are supported only when using Rspack.
 
 By default, `@rsbuild/plugin-source-build` will reading the source code first, for example, in the following example, it will read the `source` field.
 
@@ -238,8 +268,71 @@ pluginSourceBuild({
 });
 ```
 
+Different workspace packages can use different priorities:
+
+```ts
+pluginSourceBuild({
+  resolvePriority: {
+    '@example/components': 'source',
+    '@example/utils': 'output',
+  },
+});
+```
+
 - The `exports` field in package.json is not affected by `resolvePriority`.
 - The keys order in `exports` determines the resolving order, earlier declared keys having higher priority.
+
+### projectName
+
+- **Type:** `string`
+- **Default:** The package name at the Rsbuild project root
+
+Specifies the current project in the workspace project graph. Framework
+integrations can pass the package name they already resolved from their own
+application context.
+
+### extraMonorepoStrategies
+
+- **Type:** `Record<string, MonorepoAnalyzer>`
+- **Default:** `undefined`
+
+Adds adapters for monorepo formats other than the built-in pnpm workspace and
+Rush formats. Both `MonorepoAnalyzer` and `Project` are exported from the
+package root:
+
+```ts
+import {
+  type MonorepoAnalyzer,
+  pluginSourceBuild,
+  Project,
+} from '@rsbuild/plugin-source-build';
+
+const customAnalyzer: MonorepoAnalyzer = {
+  check: async (root) => isCustomMonorepo(root),
+  getProjects: async (root) => {
+    const workspacePackages = await readCustomWorkspace(root);
+    return Promise.all(
+      workspacePackages.map(async ({ name, dir }) => {
+        const project = new Project(name, dir);
+        await project.init();
+        return project;
+      }),
+    );
+  },
+};
+
+pluginSourceBuild({
+  projectName: '@example/app',
+  extraMonorepoStrategies: {
+    custom: customAnalyzer,
+  },
+});
+```
+
+The adapter should return all workspace projects. The plugin treats that result
+as the project boundary, recursively follows the current project's package
+dependencies within it, and enables source resolution only for the resulting
+projects that declare `sourceField`.
 
 ## Caveat
 

@@ -1,0 +1,9 @@
+{
+  "name": "@fixture/app",
+  "private": true,
+  "dependencies": {
+    "@fixture/external": "1.0.0",
+    "@fixture/output-first": "workspace:*",
+    "@fixture/source-first": "workspace:*"
+  }
+}

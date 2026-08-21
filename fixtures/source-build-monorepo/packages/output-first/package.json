@@ -1,0 +1,6 @@
+{
+  "name": "@fixture/output-first",
+  "version": "1.0.0",
+  "source": "./src/index.ts",
+  "main": "./lib/index.js"
+}
