@@ -5,4 +5,6 @@ export {
 } from './plugin.js';
 export { Project } from './project.js';
 export { getMonorepoBaseData, getMonorepoSubProjects } from './common/index.js';
+export type { ExtraMonorepoStrategies } from './project-utils/index.js';
+export type { ResolvePriority } from './source-build/resolve.js';
 export type { MonorepoAnalyzer } from './types/index.js';

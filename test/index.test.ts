@@ -5,7 +5,9 @@ import { createRsbuild, loadConfig } from '@rsbuild/core';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-test('should build succeed', async ({ page }) => {
+test('should build dependent workspace packages from source', async ({
+  page,
+}) => {
   const cwd = join(__dirname, 'app');
   const rsbuild = await createRsbuild({
     cwd,

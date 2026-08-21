@@ -1,22 +1,32 @@
 import type { Project } from '../project.js';
-import type { ExportsConfig } from '../types/packageJson.js';
+
+type ExportsTarget =
+  string | null | ExportsTarget[] | { [condition: string]: ExportsTarget };
 
 export type Filter = FilterFunction;
 export type FilterFunction = (
   projects: Project[],
 ) => Project[] | Promise<Project[]>;
 
-function hasExportsSourceField(
-  exportsConfig: ExportsConfig,
-  sourceField: string,
-) {
-  return (
-    typeof exportsConfig[sourceField] === 'string' ||
-    Object.values(exportsConfig).some(
-      (moduleRules) =>
-        typeof moduleRules === 'object' &&
-        typeof moduleRules[sourceField] === 'string',
-    )
+function hasExportFieldTarget(
+  target: ExportsTarget,
+  fieldName: string,
+  fieldMatched = false,
+): boolean {
+  if (typeof target === 'string') {
+    return fieldMatched;
+  }
+  if (Array.isArray(target)) {
+    return target.some((item) =>
+      hasExportFieldTarget(item, fieldName, fieldMatched),
+    );
+  }
+  if (!target) {
+    return false;
+  }
+
+  return Object.entries(target).some(([key, value]) =>
+    hasExportFieldTarget(value, fieldName, fieldMatched || key === fieldName),
   );
 }
 
@@ -27,7 +37,7 @@ export const filterByField =
       return (
         fieldName in p.metaData ||
         (checkExports &&
-          hasExportsSourceField(p.metaData.exports || {}, fieldName))
+          hasExportFieldTarget(p.metaData.exports || {}, fieldName))
       );
     });
   };

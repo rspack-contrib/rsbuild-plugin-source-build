@@ -132,7 +132,26 @@ pluginSourceBuild({
 });
 ```
 
-这是因为某些三方库（例如 Mobx）的 `package.json` 中也包含 `source` 字段，如果不进行区分，Rsbuild 可能会错误地解析这些库的源文件路径，从而导致意料之外的构建结果或类型问题。使用自定义字段可以避免此类冲突，确保 Rsbuild 在解析依赖关系时保持可控的行为。
+这样可以明确源码构建约定，并避免与其他用途的 `source` 字段冲突。使用
+Rspack 时，插件还会把源码解析限定在当前 monorepo analyzer 找到的 workspace
+依赖项目内，不会影响无关的 `node_modules` 包。
+
+## 限定源码解析范围
+
+使用 Rspack 时，插件会从 monorepo 项目图中确定源码构建范围：从当前项目出发，
+递归读取 package 依赖关系，并只保留声明了 `sourceField` 的 workspace 项目。
+只有这些包名对应的请求可以解析到源码，其他包请求继续使用 Rspack 原生解析。
+
+选中的请求仍由 Rspack 原生 resolver 解析。插件只在限定 resolver 中补充
+`sourceField`，不会修改全局 resolver，因此可以保留 target、依赖类型、alias、
+`resolvePriority` 以及 output/source fallback 等原生语义。
+
+与普通 Rspack 解析一致，选中的包仍需通过 workspace link、alias 或 tsconfig path
+可达。monorepo Adapter 只负责限定允许生效的范围，不负责向 resolver 注册包。
+
+自定义 monorepo 集成可以通过 `extraMonorepoStrategies` 提供项目图。插件会把选中的
+项目补充到 TypeScript project references；但 `tsconfig.json` 中原有的 references
+不会反向扩大源码构建的包范围。
 
 ## 配置 Project Reference
 
@@ -213,10 +232,13 @@ pluginSourceBuild({
 
 ### resolvePriority
 
-- **类型：** `'source' | 'output'`
+- **类型：** `'source' | 'output' | Record<string, 'source' | 'output'>`
 - **默认值：** `'source'`
 
-用于控制优先读取源代码还是产物代码。
+用于控制优先读取源代码还是产物代码。传入字符串时会作用于所有选中的 workspace
+包；传入对象时会按包名覆盖优先级，对象中未配置的已选中包使用 `'source'`。
+这个对象不负责选择包，源码构建范围仍由当前 monorepo Strategy 和 package 依赖图决定。
+包级优先级对象仅支持在 Rspack 中使用。
 
 默认情况下，`@rsbuild/plugin-source-build`会优先读取源代码，比如在下面的例子中，它会读取 `source` 字段。
 
@@ -236,8 +258,67 @@ pluginSourceBuild({
 });
 ```
 
+不同 workspace 包可以配置不同的解析优先级：
+
+```ts
+pluginSourceBuild({
+  resolvePriority: {
+    '@example/components': 'source',
+    '@example/utils': 'output',
+  },
+});
+```
+
 - package.json 中的 `exports` 字段不受 `resolvePriority` 的影响。
 - `exports` 中 key 的声明顺序决定了读取顺序，较早声明的 key 具有更高的优先级。
+
+### projectName
+
+- **类型：** `string`
+- **默认值：** Rsbuild 项目根目录对应的包名
+
+用于指定 workspace 项目图中的当前项目。框架集成可以直接传入其应用上下文中已经
+确定的包名。
+
+### extraMonorepoStrategies
+
+- **类型：** `Record<string, MonorepoAnalyzer>`
+- **默认值：** `undefined`
+
+用于为 pnpm workspace 和 Rush 以外的 monorepo 格式增加 Adapter。
+`MonorepoAnalyzer` 和 `Project` 均可从包根入口导入：
+
+```ts
+import {
+  type MonorepoAnalyzer,
+  pluginSourceBuild,
+  Project,
+} from '@rsbuild/plugin-source-build';
+
+const customAnalyzer: MonorepoAnalyzer = {
+  check: async (root) => isCustomMonorepo(root),
+  getProjects: async (root) => {
+    const workspacePackages = await readCustomWorkspace(root);
+    return Promise.all(
+      workspacePackages.map(async ({ name, dir }) => {
+        const project = new Project(name, dir);
+        await project.init();
+        return project;
+      }),
+    );
+  },
+};
+
+pluginSourceBuild({
+  projectName: '@example/app',
+  extraMonorepoStrategies: {
+    custom: customAnalyzer,
+  },
+});
+```
+
+Adapter 应返回全部 workspace 项目。插件会把该结果作为项目边界，只在其中递归读取
+当前项目的 package 依赖关系，并仅对最终选中且声明了 `sourceField` 的项目启用源码解析。
 
 ## 注意事项
 
@@ -251,6 +332,11 @@ pluginSourceBuild({
 ```text title=".gitignore"
 *.tsbuildinfo
 ```
+
+## 参与贡献
+
+欢迎参与贡献。开发环境、测试与 Pull Request 约定请参阅
+[CONTRIBUTING.md](./CONTRIBUTING.md)。
 
 ## License
 

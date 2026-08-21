@@ -1,0 +1,9 @@
+{
+  "name": "@fixture/source-first",
+  "version": "1.0.0",
+  "source": "./src/index.ts",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "@fixture/transitive": "workspace:*"
+  }
+}
