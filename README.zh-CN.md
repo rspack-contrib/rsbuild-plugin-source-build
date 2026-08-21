@@ -333,6 +333,11 @@ Adapter 应返回全部 workspace 项目。插件会把该结果作为项目边�
 *.tsbuildinfo
 ```
 
+## 参与贡献
+
+欢迎参与贡献。开发环境、测试与 Pull Request 约定请参阅
+[CONTRIBUTING.md](./CONTRIBUTING.md)。
+
 ## License
 
 [MIT](./LICENSE).

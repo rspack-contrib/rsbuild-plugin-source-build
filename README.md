@@ -347,6 +347,11 @@ When using `@rsbuild/plugin-source-build`, there are a few things to keep in min
 *.tsbuildinfo
 ```
 
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for
+development setup, testing, and pull request guidelines.
+
 ## License
 
 [MIT](./LICENSE).
