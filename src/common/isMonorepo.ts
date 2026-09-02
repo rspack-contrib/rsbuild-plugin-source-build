@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { PNPM_WORKSPACE_FILE, RUSH_JSON_FILE } from '../constants.js';
+import { PNPM_WORKSPACE_FILE, RUSH_JSON_FILE } from '../constants.ts';
 
 export type IsMonorepoFn = (
   monorepoRootPath: string,

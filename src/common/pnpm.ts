@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import glob, { type Options as GlobOptions } from 'fast-glob';
-import { PACKAGE_JSON, PNPM_WORKSPACE_FILE } from '../constants.js';
-import { Project } from '../project.js';
-import type { IPnpmWorkSpace } from '../types/index.js';
-import { readPackageJson } from '../utils.js';
+import { PACKAGE_JSON, PNPM_WORKSPACE_FILE } from '../constants.ts';
+import { Project } from '../project.ts';
+import type { IPnpmWorkSpace } from '../types/index.ts';
+import { readPackageJson } from '../utils.ts';
 
 const getPatternsFromYaml = async (monorepoRoot: string): Promise<string[]> => {
   const { parse } = await import('yaml');

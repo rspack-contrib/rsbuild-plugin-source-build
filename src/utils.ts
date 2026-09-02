@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import json5 from 'json5';
-import { RUSH_JSON_FILE } from './constants.js';
-import type { INodePackageJson, IRushConfig } from './types/index.js';
+import { RUSH_JSON_FILE } from './constants.ts';
+import type { INodePackageJson, IRushConfig } from './types/index.ts';
 
 export const readPackageJson = async (
   pkgJsonFilePath: string,

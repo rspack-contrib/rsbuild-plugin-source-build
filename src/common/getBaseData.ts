@@ -1,7 +1,7 @@
 import path from 'node:path';
-import type { MonorepoAnalyzer } from '../types/index.js';
-import type { GetProjectsFunc } from './getProjects.js';
-import { type IsMonorepoFn, isMonorepo } from './isMonorepo.js';
+import type { MonorepoAnalyzer } from '../types/index.ts';
+import type { GetProjectsFunc } from './getProjects.ts';
+import { type IsMonorepoFn, isMonorepo } from './isMonorepo.ts';
 
 export interface IMonorepoBaseData {
   isMonorepo: boolean;

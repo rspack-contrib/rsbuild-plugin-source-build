@@ -1,6 +1,6 @@
 import path from 'node:path';
-import { Project } from '../project.js';
-import { readRushJson } from '../utils.js';
+import { Project } from '../project.ts';
+import { readRushJson } from '../utils.ts';
 
 export const getProjects = async (monorepoRoot: string): Promise<Project[]> => {
   const rushConfiguration = await readRushJson(monorepoRoot);

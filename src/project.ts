@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { PACKAGE_JSON } from './constants.js';
-import type { ExportsConfig, INodePackageJson } from './types/packageJson.js';
-import { readPackageJson } from './utils.js';
+import { PACKAGE_JSON } from './constants.ts';
+import type { ExportsConfig, INodePackageJson } from './types/packageJson.ts';
+import { readPackageJson } from './utils.ts';
 
 export class Project {
   name: string;

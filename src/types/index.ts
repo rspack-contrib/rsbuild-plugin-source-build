@@ -1,8 +1,8 @@
-import type { GetProjectsFunc } from '../common/getProjects.js';
-import type { IsMonorepoFn } from '../common/isMonorepo.js';
+import type { GetProjectsFunc } from '../common/getProjects.ts';
+import type { IsMonorepoFn } from '../common/isMonorepo.ts';
 
-export * from './packageJson.js';
-export * from './rushJson.js';
+export * from './packageJson.ts';
+export * from './rushJson.ts';
 
 export interface MonorepoAnalyzer {
   check: IsMonorepoFn;
