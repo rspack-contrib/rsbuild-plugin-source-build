@@ -2,8 +2,9 @@
   "name": "playground",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "npx rsbuild",
-    "build": "npx rsbuild build"
+    "build": "rs build",
+    "dev": "rs dev"
   }
 }
