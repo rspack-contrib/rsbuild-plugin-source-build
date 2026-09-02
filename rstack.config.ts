@@ -13,11 +13,9 @@ define.test({
     // Let Rsbuild choose the mode based on the command.
     NODE_ENV: undefined,
   },
-  isolate: false,
 });
 
 define.fmt({
-  ignorePatterns: ['dist'],
   singleQuote: true,
 });
 
@@ -26,13 +24,4 @@ define.staged({
   '*.{json,json5,jsonc,md,mdx,css,scss,less,html,yml,yaml}': 'rs fmt',
 });
 
-define.lint(({ globals, js, ts }) => [
-  js.configs.recommended,
-  ts.configs.recommended,
-  {
-    files: ['playground/src/**/*'],
-    languageOptions: {
-      globals: globals.browser,
-    },
-  },
-]);
+define.lint(({ js, ts }) => [js.configs.recommended, ts.configs.recommended]);
