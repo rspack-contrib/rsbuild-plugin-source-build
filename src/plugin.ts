@@ -6,9 +6,9 @@ import {
   type ExtraMonorepoStrategies,
   filterByField,
   getDependentProjects,
-} from './project-utils/index.js';
-import type { Project } from './project.js';
-import type { TsConfig } from './types/index.js';
+} from './project-utils/index.ts';
+import type { Project } from './project.ts';
+import type { TsConfig } from './types/index.ts';
 
 export const PLUGIN_SOURCE_BUILD_NAME = 'rsbuild:source-build';
 

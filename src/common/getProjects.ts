@@ -1,7 +1,7 @@
-import type { Project } from '../project.js';
-import type { IMonorepoBaseData } from './getBaseData.js';
-import { getProjects as getPnpmMonorepoSubProjects } from './pnpm.js';
-import { getProjects as getRushMonorepoSubProjects } from './rush.js';
+import type { Project } from '../project.ts';
+import type { IMonorepoBaseData } from './getBaseData.ts';
+import { getProjects as getPnpmMonorepoSubProjects } from './pnpm.ts';
+import { getProjects as getRushMonorepoSubProjects } from './rush.ts';
 
 export type GetProjectsFunc = (
   rootPath: string,

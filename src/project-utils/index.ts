@@ -1,2 +1,2 @@
-export * from './getDependentProjects.js';
-export * from './filter.js';
+export * from './getDependentProjects.ts';
+export * from './filter.ts';

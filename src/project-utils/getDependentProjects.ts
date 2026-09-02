@@ -3,11 +3,11 @@ import path from 'node:path';
 import {
   getMonorepoBaseData,
   getMonorepoSubProjects,
-} from '../common/index.js';
-import type { Project } from '../project.js';
-import type { MonorepoAnalyzer } from '../types/index.js';
-import { readPackageJson } from '../utils.js';
-import type { Filter } from './filter.js';
+} from '../common/index.ts';
+import type { Project } from '../project.ts';
+import type { MonorepoAnalyzer } from '../types/index.ts';
+import { readPackageJson } from '../utils.ts';
+import type { Filter } from './filter.ts';
 
 export type ExtraMonorepoStrategies = Record<string, MonorepoAnalyzer>;
 

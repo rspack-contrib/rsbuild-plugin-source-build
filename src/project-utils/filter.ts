@@ -1,5 +1,5 @@
-import type { Project } from '../project.js';
-import type { ExportsConfig } from '../types/packageJson.js';
+import type { Project } from '../project.ts';
+import type { ExportsConfig } from '../types/packageJson.ts';
 
 export type Filter = FilterFunction;
 export type FilterFunction = (

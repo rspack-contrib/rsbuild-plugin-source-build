@@ -1,8 +1,8 @@
-export * from './getBaseData.js';
-export * from './isMonorepo.js';
+export * from './getBaseData.ts';
+export * from './isMonorepo.ts';
 
-export { getMonorepoSubProjects } from './getProjects.js';
-export { getProjects as getPnpmMonorepoSubProjects } from './pnpm.js';
-export { getProjects as getRushMonorepoSubProjects } from './rush.js';
+export { getMonorepoSubProjects } from './getProjects.ts';
+export { getProjects as getPnpmMonorepoSubProjects } from './pnpm.ts';
+export { getProjects as getRushMonorepoSubProjects } from './rush.ts';
 
-export type { GetProjectsFunc } from './getProjects.js';
+export type { GetProjectsFunc } from './getProjects.ts';
