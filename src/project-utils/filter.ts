@@ -15,6 +15,7 @@ function hasExportsSourceField(
     Object.values(exportsConfig).some(
       (moduleRules) =>
         typeof moduleRules === 'object' &&
+        moduleRules !== null &&
         typeof moduleRules[sourceField] === 'string',
     )
   );

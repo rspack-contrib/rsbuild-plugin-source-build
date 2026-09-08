@@ -13,7 +13,8 @@
       "types": "./dist/types/card/index.d.ts",
       "source": "./src/card/index.tsx",
       "default": "./dist/card/index.js"
-    }
+    },
+    "./*.test": null
   },
   "dependencies": {
     "@e2e/source-build-utils": "workspace:*",

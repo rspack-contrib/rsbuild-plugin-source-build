@@ -140,6 +140,7 @@ export class Project {
     for (const moduleRules of Object.values(exportsConfig)) {
       if (
         typeof moduleRules === 'object' &&
+        moduleRules !== null &&
         typeof moduleRules[sourceField] === 'string'
       ) {
         exportsSourceDirs.push(

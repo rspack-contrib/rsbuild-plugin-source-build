@@ -62,6 +62,7 @@ export interface IPeerDependenciesMetaTable {
 }
 
 export type ExportsModuleRules =
+  | null
   | string
   | Record<string, string>
   | Record<string, string | Record<string, string>>;
